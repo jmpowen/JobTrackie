@@ -22,7 +22,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "jsx-quotes": ["error", "prefer-single"]
+    }
   },
   "browserslist": {
     "production": [
