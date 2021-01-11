@@ -1,6 +1,13 @@
+import styled from 'styled-components';
 
-
+const HomeWrapper = styled.div`
+  
+`;
 
 export default function Home() {
-  return <div>Home</div>;
+  return (
+    <HomeWrapper>
+      Home
+    </HomeWrapper>
+    )
 }
