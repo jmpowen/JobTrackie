@@ -1,4 +1,4 @@
-package com.business.backend.entities
+package com.business.backend.models
 
 import java.time.LocalDateTime
 import lombok.AllArgsConstructor;
