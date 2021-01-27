@@ -5,9 +5,10 @@ const useStyles = makeStyles({
   root: {
     width: 200,
     height: 200,
-    backgroundColor: '#727d8c',
+    borderRadius: 35,
+    backgroundColor: '#9fafc4',
     '&:hover': {
-      backgroundColor: '#9fafc4'
+      backgroundColor: 'gray'
     }
   },
 })
