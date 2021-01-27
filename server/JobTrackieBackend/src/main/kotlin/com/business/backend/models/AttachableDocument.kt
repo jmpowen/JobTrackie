@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Builder
 @Document(collection = "attachableDocument")
 data class AttachableDocument(
-        var name: String,
-		var description: String,
-		var fileContent: ByteArray,
+	var name: String,
+	var description: String,
+	var fileContent: ByteArray,
 )
