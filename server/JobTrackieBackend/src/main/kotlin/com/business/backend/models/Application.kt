@@ -13,15 +13,15 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Builder
 @Document(collection = "application")
 data class Application(
-        var accountId: String,
-        var description: String,
-        val date: LocalDateTime,
-        var company: String,
-        var position: String,
-        var attachedDocuments: ArrayList<AttachableDocument>,
-        var currentStatus: Status,
+	var accountId: String,
+	var description: String,
+	val date: LocalDateTime,
+	var company: String,
+	var position: String,
+	var attachedDocuments: ArrayList<AttachableDocument>,
+	var currentStatus: Status,
 )
 
 enum class Status {
-    PENDING, REJECTED, INTERVIEW, OFFER, ACCEPTED, UNKOWN
+	PENDING, REJECTED, INTERVIEW, OFFER, ACCEPTED, UNKOWN
 }

@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Builder
 @Document(collection = "account")
 data class Account(
-        var email: String,
-        var type: String,
-        val joinDate: LocalDateTime
+	var email: String,
+	var type: String,
+	val joinDate: LocalDateTime
 )
