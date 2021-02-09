@@ -1,0 +1,19 @@
+type Query {
+	applications: [Application]
+}
+
+type Application {
+	accountId: ID!
+	name: String
+	description: String
+	date: LocalDateTime
+	company: String
+	position: String
+	currentStatus: String
+}
+
+type Mutation {
+	newApplication(name: String!, company: String!, position: String!)
+	deleteApplication(accountID: ID!) : Boolean
+	updateApplication(accountID:ID!, currentStatus) : Application!
+}

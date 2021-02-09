@@ -74,6 +74,24 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.graphql-java/graphql-spring-boot-starter -->
+		<dependency>
+		    <groupId>com.graphql-java</groupId>
+		    <artifactId>graphql-spring-boot-starter</artifactId>
+		    <version>5.0.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.graphql-java-kickstart/graphiql-spring-boot-starter -->
+		<dependency>
+		    <groupId>com.graphql-java-kickstart</groupId>
+		    <artifactId>graphiql-spring-boot-starter</artifactId>
+		    <version>11.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.graphql-java-kickstart/graphql-java-tools -->
+		<dependency>
+		    <groupId>com.graphql-java-kickstart</groupId>
+		    <artifactId>graphql-java-tools</artifactId>
+		    <version>11.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
