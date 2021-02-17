@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class Application(
 		var accountID: String,
 		var name: String,
-		var description: String,
 		val date: LocalDateTime,
 		var company: String,
 		var position: String,
