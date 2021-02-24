@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "application")
 data class Application(
-		var accountID: String,
+		var accountId: String,
 		var name: String,
 		val date: LocalDateTime,
 		var company: String,

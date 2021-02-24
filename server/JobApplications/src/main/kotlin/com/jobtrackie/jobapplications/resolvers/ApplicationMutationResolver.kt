@@ -19,7 +19,7 @@ class ApplicationMutationResolver(
 
 	fun newApplication(name: String, company: String, position: String): Application {
 		val application = Application(
-				accountID = UUID.randomUUID().toString(),
+				accountId = UUID.randomUUID().toString(),
 				name = name,
 				date = LocalDateTime.now(),
 				company = company,
@@ -30,9 +30,9 @@ class ApplicationMutationResolver(
 	}
 
 	//how could false be returned?
-	fun deleteApplication(accountID: String): Boolean {
+	fun deleteApplication(accountId: String): Boolean {
 		try {
-			applicationRepository.deleteById(accountID)
+			applicationRepository.deleteById(accountId)
 		} catch(error : IllegalArgumentException){
 			return false
 		}

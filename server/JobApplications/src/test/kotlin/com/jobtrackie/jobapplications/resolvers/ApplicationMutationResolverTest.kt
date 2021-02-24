@@ -6,8 +6,9 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest
 class ApplicationMutationResolverTest {
 
 	@MockkBean
@@ -25,7 +26,7 @@ class ApplicationMutationResolverTest {
 	fun `should delete an application by its accountID`() {
 		//every { applicationRepository.deleteById(any()) } returns true
 
-        applicationMutationResolver.deleteApplication("12345")
+        //applicationMutationResolver.deleteApplication("12345")
 
 
 	}
