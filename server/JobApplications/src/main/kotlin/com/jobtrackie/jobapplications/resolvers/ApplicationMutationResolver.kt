@@ -17,10 +17,9 @@ class ApplicationMutationResolver(
 		@Autowired private val applicationRepository: ApplicationRepository
 ): GraphQLMutationResolver {
 
-	fun newApplication(name: String, company: String, position: String): Application {
+	fun newApplication(company: String, position: String): Application {
 		val application = Application(
 				accountId = UUID.randomUUID().toString(),
-				name = name,
 				date = LocalDateTime.now(),
 				company = company,
 				position = position,

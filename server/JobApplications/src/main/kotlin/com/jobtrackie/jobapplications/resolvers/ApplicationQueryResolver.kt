@@ -15,8 +15,7 @@ class ApplicationQueryResolver(
 ) : GraphQLQueryResolver {
 	
 	fun applications(): List<Application> {
-		val appList = applicationRepository.findAll()
-		return appList
+		return applicationRepository.findAll()
 	}
 }
 

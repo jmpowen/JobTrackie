@@ -4,7 +4,6 @@ type Query {
 
 type Application {
 	accountId: ID!
-	name: String
 	date: LocalDateTime
 	company: String
 	position: String
@@ -12,7 +11,7 @@ type Application {
 }
 
 type Mutation {
-	newApplication(name: String!, company: String!, position: String!)
+	newApplication(company: String!, position: String!) : Application!
 	deleteApplication(accountID: ID!) : Boolean
 	updateApplication(accountID:ID!, currentStatus) : Application!
 }
