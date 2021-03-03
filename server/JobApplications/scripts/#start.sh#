@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$#" = "0" ]; then
+    read -p "Please provide a .jar to run."
+else
+    
+fi
+java -jar asdf.jar & echo $! > ./pid.file &
