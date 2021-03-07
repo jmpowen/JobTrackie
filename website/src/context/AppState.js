@@ -2,10 +2,11 @@ import React, { useReducer } from 'react';
 
 import AppContext from './AppContext';
 import AppReducer from './AppReducer';
+import { FAKE_THING } from './types';
 
 const AppState = (props) => {
   let initialState = {
-    
+    fakeThing: null
   };
 
   // No reason to use the dispatch yet,
@@ -13,10 +14,15 @@ const AppState = (props) => {
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
+  const addFakeThing = (fakeThing) => {
+    dispatch({ type: FAKE_THING, payload: fakeThing})
+  }
+
   return (
     <AppContext.Provider
       value={{
-        
+        fakeThing: state.fakeThing,
+        addFakeThing
       }}
     >
       {props.children}
