@@ -2,13 +2,11 @@ import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import Popover from '@material-ui/core/Popover';
 
 import CustomTable from '../../components/CustomTable';
 
-import {
-  isNullOrNaNOrLessThanOrEqualToZero,
-  isNullOrEmptyOrWhitespace,
-} from "../../helpers/inputs";
+import AddNewApplication from './AddNewApplication';
 
 const useStyles = makeStyles({
   root: {
@@ -65,87 +63,30 @@ const applicationAccessOrder = [
 export default function Applications() {
   const classes = useStyles();
 
-  const [values, setValues] = useState({
-    company: null,
-    role: null,
-    datetime: null,
-    coverLetter: null,
-    resume: null,
-    otherDocs: null,
-    status: null,
-    applicationItems: [],
-  })
-
-  const [alerts, setAlerts] = useState({
-    company: false,
-    role: false,
-    datetime: false,
-    coverLetter: false,
-    resume: false,
-    otherDocs: false,
-    status: false,
-  })
-
-  const handleAddNewApplication = () => {
-    let aCompany = isNullOrEmptyOrWhitespace(values.company);
-    let aRole = isNullOrEmptyOrWhitespace(values.role);
-    let aDatetime = false; // Need to create a time picker that the user can select date and time from...(probably won't be checked except to make sure no future dates/times)
-    let aCoverLetter = false; // Just need to check its not null(they selected a document basically or 'No Cover Letter Option')
-    let aResume = false; // Same as above
-    let aOtherDocs = false // Same as above
-    let aStatus = false; // Probably won't be needed. Just here for now while I build it out. Status will be preselected to 'applied' but user can change to something else
-
-    setAlerts({
-      company: aCompany,
-      role: aRole,
-      datetime: aDatetime,
-      coverLetter: aCoverLetter,
-      resume: aResume,
-      otherDocs: aOtherDocs,
-      status: aStatus
-    })
-
-    if (aCompany || aRole || aDatetime || aCoverLetter || aResume || aOtherDocs || aStatus) {
-      return;
-    }
-
-    let aItems = values.applicationItems;
-
-    aItems.push({
-      id: aItems.length,
-      company: values.company,
-      role: values.role,
-      datetime: values.datetime,
-      coverLetter: values.coverLetter,
-      resume: values.resume,
-      otherDocs: values.otherDocs,
-      status: values.status,
-    });
-
-    setValues({
-      ...values,
-      company: null,
-      role: null,
-      datetime: null,
-      coverLetter: null,
-      resume: null,
-      otherDocs: null,
-      status: null,
-      applicationItems: aItems
-    });
-  }
-
   const handleDeleteApplicationItem = (index) => {
-    let aItems = values.applicationItems;
+    // let aItems = values.applicationItems;
 
-    aItems.splice(index, 1);
-    aItems.forEach((item, index) => (item.id = index));
+    // aItems.splice(index, 1);
+    // aItems.forEach((item, index) => (item.id = index));
 
-    setValues({
-      ...values,
-      applicationItems: aItems
-    })
+    // setValues({
+    //   ...values,
+    //   applicationItems: aItems
+    // })
   }
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <div className={classes.root}>
@@ -155,8 +96,28 @@ export default function Applications() {
           variant='contained'
           startIcon={<AddIcon />}
           className={classes.addAppButton} 
-          onClick={handleAddNewApplication}>Add New Application</Button>
+          onClick={handleClick}
+        >
+          Add New Application
+        </Button>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <AddNewApplication />
+        </Popover>
       </div>
+      {/* 
       <div className={classes.tableDiv}>
         <CustomTable 
           columnTitles={applicationColumnTitles}
@@ -164,7 +125,7 @@ export default function Applications() {
           accessOrder={applicationAccessOrder}
           handleDelete={handleDeleteApplicationItem}
         />
-      </div>
+      </div>*/}
     </div>
   )
 }
