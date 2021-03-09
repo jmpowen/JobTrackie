@@ -1,12 +1,9 @@
 package com.jobtrackie.jobapplications.repository
 
-import org.springframework.stereotype.Repository
-import org.springframework.data.mongodb.repository.MongoRepository
-
 import com.jobtrackie.jobapplications.model.Application
+import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.stereotype.Repository
 
 @Repository
 interface ApplicationRepository : MongoRepository<Application, String> {
-
-    fun findByCompany(company: String): List<Application>
 }
