@@ -17,7 +17,7 @@ export default function AppRoutes() {
       <Switch>
         <Route path='/login' component={Login} />
         <Route path='/signup' component={SignUp} />
-        <ProtectedRoute exact path='/' component={Home} />
+        <Route exact path='/' component={Home} />
       </Switch>
     </Router>
   )

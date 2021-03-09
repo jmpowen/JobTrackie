@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
   tableDiv: {
     marginLeft: '10%',
-    width: '80%'
+    width: '80%',
   }
 })
 
@@ -63,16 +63,15 @@ const applicationAccessOrder = [
 export default function Applications() {
   const classes = useStyles();
 
+  const [applicationItems, setApplicationItems] = useState([])
+
   const handleDeleteApplicationItem = (index) => {
-    // let aItems = values.applicationItems;
+    let aItems = [...applicationItems];
 
-    // aItems.splice(index, 1);
-    // aItems.forEach((item, index) => (item.id = index));
+    aItems.splice(index, 1);
+    aItems.forEach((item, index) => (item.id = index));
 
-    // setValues({
-    //   ...values,
-    //   applicationItems: aItems
-    // })
+    setApplicationItems(aItems);
   }
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -114,18 +113,17 @@ export default function Applications() {
             horizontal: 'left',
           }}
         >
-          <AddNewApplication />
+          <AddNewApplication handleClose={handleClose} applicationItems={applicationItems} setApplicationItems={setApplicationItems} />
         </Popover>
       </div>
-      {/* 
       <div className={classes.tableDiv}>
         <CustomTable 
           columnTitles={applicationColumnTitles}
-          items={values.applicationItems}
+          items={applicationItems}
           accessOrder={applicationAccessOrder}
           handleDelete={handleDeleteApplicationItem}
         />
-      </div>*/}
+      </div>
     </div>
   )
 }

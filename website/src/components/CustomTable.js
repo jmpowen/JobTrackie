@@ -9,6 +9,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+const useStyles = makeStyles({
+  root: {
+    height: '400px'
+  }
+})
+
 /**
  * 
  * @param { columnTitles, items, accessOrder, handleDelete } props 
@@ -21,10 +27,11 @@ import Button from '@material-ui/core/Button';
  */
 export default function CustomTable(props) {
   const { columnTitles, items, accessOrder, handleDelete } = props;
+  const classes = useStyles();
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className={classes.root}>
         <Table>
           <TableHead>
             <TableRow>
