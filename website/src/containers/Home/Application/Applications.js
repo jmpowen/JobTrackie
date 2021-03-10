@@ -4,7 +4,7 @@ import { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import Popover from '@material-ui/core/Popover';
 
-import CustomTable from '../../components/CustomTable';
+import CustomTable from '../../../components/CustomTable';
 
 import AddNewApplication from './AddNewApplication';
 
@@ -34,20 +34,20 @@ const useStyles = makeStyles({
 })
 
 const applicationColumnTitles = [
-  "    ", // Delete will be at the front (and will simply act as a 'do-not-show-any-longer' button)
   "Company",
   "Role",
-  "Date & Time",
+  "Date",
   "Cover Letter",
   "Resume",
   "Other Documents",
-  "Status" // Functionality of the status column needs to move resumes that have been 'closed' to the bottom
+  "Status", // Functionality of the status column needs to move resumes that have been 'closed' to the bottom
+  "    ", // Delete will be at the front (and will simply act as a 'do-not-show-any-longer' button)
 ]
 
 const applicationAccessOrder = [
   "company",
   "role",
-  "datetime",
+  "date",
   "coverLetter",
   "resume",
   "otherDocs",
@@ -64,6 +64,10 @@ export default function Applications() {
   const classes = useStyles();
 
   const [applicationItems, setApplicationItems] = useState([])
+
+  const handleChangeStatus = (index) => {
+    // FUCK THIS IS GOING TO BE INTERESTING TO IMPLEMENT...I'M GOING TO HAVE TO THINK ON IT
+  }
 
   const handleDeleteApplicationItem = (index) => {
     let aItems = [...applicationItems];

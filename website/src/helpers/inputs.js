@@ -10,3 +10,7 @@ export function isNullOrEmptyOrWhitespace(someString = '') {
 export function isNullOrNaNOrLessThanOrEqualToZero(someNumber = 0) {
   return (!someNumber || Number.isNaN(someNumber) || someNumber <= 0)
 }
+
+export function isNullOrEmpty(someString = '') {
+  return (!someString || someString.length === 0)
+}
