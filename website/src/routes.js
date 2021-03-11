@@ -8,7 +8,7 @@ import Home from './containers/Home';
 import Login from './containers/Login';
 import SignUp from './containers/SignUp';
 
-import ProtectedRoute from './hoc/ProtectedRoute';
+// import ProtectedRoute from './hoc/ProtectedRoute';
 
 export default function AppRoutes() {
   return (
@@ -17,7 +17,7 @@ export default function AppRoutes() {
       <Switch>
         <Route path='/login' component={Login} />
         <Route path='/signup' component={SignUp} />
-        <Route exact path='/' component={Home} />
+        <Route exact path='/' component={Home} /> {/* Will be ProtectedRoute once we have DB up and running*/}
       </Switch>
     </Router>
   )

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import Popover from '@material-ui/core/Popover';
 
-import CustomTable from '../../../components/CustomTable';
+import ApplicationsTable from './ApplicationsTable';
 
 import AddNewApplication from './AddNewApplication';
 
@@ -65,8 +65,12 @@ export default function Applications() {
 
   const [applicationItems, setApplicationItems] = useState([])
 
-  const handleChangeStatus = (index) => {
-    // FUCK THIS IS GOING TO BE INTERESTING TO IMPLEMENT...I'M GOING TO HAVE TO THINK ON IT
+  const handleChangeStatus = (index, status) => {
+    let aItems = [...applicationItems];
+
+    aItems.filter(aItem => aItem.id === index)[0].status = status;
+
+    setApplicationItems(aItems);
   }
 
   const handleDeleteApplicationItem = (index) => {
@@ -121,10 +125,11 @@ export default function Applications() {
         </Popover>
       </div>
       <div className={classes.tableDiv}>
-        <CustomTable 
+        <ApplicationsTable 
           columnTitles={applicationColumnTitles}
           items={applicationItems}
           accessOrder={applicationAccessOrder}
+          handleChangeStatus={handleChangeStatus}
           handleDelete={handleDeleteApplicationItem}
         />
       </div>

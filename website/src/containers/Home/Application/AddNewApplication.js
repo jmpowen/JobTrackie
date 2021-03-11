@@ -14,13 +14,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 import {
-  isNullOrNaNOrLessThanOrEqualToZero,
   isNullOrEmptyOrWhitespace,
   isNullOrEmpty,
 } from '../../../helpers/inputs';
-import { Typography } from '@material-ui/core';
+
+import { PostData } from '../../../helpers/httpRequests';
 
 const useStyles = makeStyles({
   root: {},
@@ -64,6 +65,19 @@ export default function AddNewApplication(props) {
     otherDocs: false,
     status: false,
   });
+
+  const postApplication = () => {
+    PostData('somerURL', applicationItems[applicationItems.length - 1])
+      .then(res => {
+        if (res === 'success')  { // Or something
+          // Do nothing?
+        } else {
+          // Alert sending to DB failed
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+  }
 
   const handleAddNewApplication = () => {
     let aCompany = isNullOrEmptyOrWhitespace(values.company);
@@ -122,6 +136,8 @@ export default function AddNewApplication(props) {
     });
 
     setApplicationItems(aItems);
+
+    postApplication();
 
     handleClose();
   };
