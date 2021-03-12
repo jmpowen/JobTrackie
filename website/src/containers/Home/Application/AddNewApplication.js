@@ -15,6 +15,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import {
   isNullOrEmptyOrWhitespace,
@@ -34,6 +37,9 @@ const useStyles = makeStyles({
   statusDiv: {
     display: 'flex',
   },
+  docDiv: {
+    width: 150
+  },
   submitButton: {
     backgroundColor: '#a6a298',
     color: 'black',
@@ -51,10 +57,15 @@ export default function AddNewApplication(props) {
     role: '',
     date: `${new Date().toDateString()}`,
     coverLetter: null,
+    clDocumentName: '',
     resume: null,
+    rDocumentName: '',
     otherDocs: null,
+    oDocumentName: '',
     status: '',
   });
+
+
 
   const [alerts, setAlerts] = useState({
     company: false,
@@ -68,16 +79,18 @@ export default function AddNewApplication(props) {
 
   const postApplication = () => {
     PostData('somerURL', applicationItems[applicationItems.length - 1])
-      .then(res => {
-        if (res === 'success')  { // Or something
+      .then((res) => {
+        if (res === 'success') {
+          // Or something
           // Do nothing?
         } else {
           // Alert sending to DB failed
         }
-      }).catch(err => {
-        console.log(err)
       })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleAddNewApplication = () => {
     let aCompany = isNullOrEmptyOrWhitespace(values.company);
@@ -193,6 +206,15 @@ export default function AddNewApplication(props) {
                 </Input>
               </FormControl>
             </Typography>
+            <FormControl variant='outlined' className={classes.docDiv}>
+              <InputLabel>Cover Letter</InputLabel>
+              <Select value={values.clDocumentName} onChange={(e) => setValues({ ...values, clDocumentName: e.target.value })} label='Document'>
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {/* Need to map a doc array here */}
+              </Select>
+            </FormControl>
           </div>
           <div>
             <Typography>
@@ -203,6 +225,15 @@ export default function AddNewApplication(props) {
                 </Input>
               </FormControl>
             </Typography>
+            <FormControl variant='outlined' className={classes.docDiv}>
+              <InputLabel>Resume</InputLabel>
+              <Select value={values.rDocumentName} onChange={(e) => setValues({ ...values, rDocumentName: e.target.value })} label='Document'>
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {/* Need to map a doc array here */}
+              </Select>
+            </FormControl>
           </div>
           <div>
             <Typography>
@@ -213,6 +244,15 @@ export default function AddNewApplication(props) {
                 </Input>
               </FormControl>
             </Typography>
+            <FormControl variant='outlined' className={classes.docDiv}>
+              <InputLabel>Other Document</InputLabel>
+              <Select value={values.oDocumentName} onChange={(e) => setValues({ ...values, oDocumentName: e.target.value })} label='Document'>
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {/* Need to map a doc array here */}
+              </Select>
+            </FormControl>
           </div>
         </div>
         <div className={classes.statusDiv}>
