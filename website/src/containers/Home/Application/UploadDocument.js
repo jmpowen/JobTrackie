@@ -9,6 +9,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { PostData } from '../../../helpers/httpRequests';
 
 const useStyles = makeStyles({
   root: {},
@@ -19,12 +20,12 @@ const useStyles = makeStyles({
     padding: '10px',
   },
   statusDiv: {
-    textAlign: 'center',
+    justifyContent: 'center',
     width: '100%',
+    margin: 10
   },
   alert: {
-    display: 'inline-block',
-    width: '150px',
+    width: 50,
     marginTop: 14,
   },
   submitButton: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
     width: '100%',
     justifyContent: 'center',
   },
-})
+});
 
 export default function UploadDocument(props) {
   const { handleClose, documents, setDocuments } = props;
@@ -43,13 +44,13 @@ export default function UploadDocument(props) {
     type: 'resume',
     document: null,
     name: '',
-    version: ''
-  })
+    version: '',
+  });
 
   const [alerts, setAlerts] = useState({
     document: false,
-    name: false
-  })
+    name: false,
+  });
 
   const handleAddNewDocument = () => {
     let aDocument = values.document === null;
@@ -57,16 +58,35 @@ export default function UploadDocument(props) {
 
     setAlerts({
       document: aDocument,
-      name: aName
-    })
+      name: aName,
+    });
 
     if (aDocument || aName) {
       // Alerts here
       return;
     }
 
+    let dItems = [...documents];
 
-  }
+    dItems.push({
+      type: values.type,
+      name: values.name,
+      version: values.version,
+    });
+
+    setDocuments(dItems);
+
+    PostData('url here', {
+      type: values.type,
+      name: values.name,
+      version: values.version,
+      document: values.document,
+    }).then((res) => {
+      console.log(res);
+    });
+
+    handleClose();
+  };
 
   const handleUpload = (e) => {
     const formData = new FormData();
@@ -77,9 +97,9 @@ export default function UploadDocument(props) {
     <>
       <Card className={classes.root}>
         <div className={classes.inputItems}>
-            <FormControl>
-              <Input type='file' onChange={handleUpload} variant='outlined' />
-            </FormControl>
+          <FormControl>
+            <Input type='file' onChange={handleUpload} variant='outlined' />
+          </FormControl>
         </div>
         <div>
           <TextField
@@ -141,5 +161,5 @@ export default function UploadDocument(props) {
         </div>
       </Card>
     </>
-  )
+  );
 }

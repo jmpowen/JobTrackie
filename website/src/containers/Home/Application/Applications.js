@@ -67,7 +67,11 @@ export default function Applications() {
 
   const [applicationItems, setApplicationItems] = useState([])
 
-  const [documents, setDocuments] = useState([])
+  const [documents, setDocuments] = useState({
+    coverLetter: [],
+    resumes: [],
+    otherDocs: []
+  })
 
   const handleChangeStatus = (index, status) => {
     let aItems = [...applicationItems];
@@ -140,7 +144,7 @@ export default function Applications() {
             horizontal: 'left',
           }}
         >
-          <AddNewApplication handleClose={handleClose1} applicationItems={applicationItems} setApplicationItems={setApplicationItems} />
+          <AddNewApplication handleClose={handleClose1} applicationItems={applicationItems} setApplicationItems={setApplicationItems} documents={documents} />
         </Popover>
         <Button
           variant='contained'

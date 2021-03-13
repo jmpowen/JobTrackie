@@ -9,19 +9,19 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import Alert from '@material-ui/lab/Alert';
 
 import {
   isNullOrEmptyOrWhitespace,
   isNullOrEmpty,
+  isInvalidDate,
 } from '../../../helpers/inputs';
 
 import { PostData } from '../../../helpers/httpRequests';
@@ -32,13 +32,19 @@ const useStyles = makeStyles({
     height: '30px',
   },
   inputItems: {
-    padding: '10px',
+    width: '24%',
+    margin: 10,
   },
   statusDiv: {
+    justifyContent: 'center',
     display: 'flex',
   },
-  docDiv: {
-    width: 150
+  alert: {
+    marginTop: 14,
+    display: 'inline-block',
+    marginRight: 5,
+    marginLeft: 5,
+    width: 53,
   },
   submitButton: {
     backgroundColor: '#a6a298',
@@ -49,7 +55,7 @@ const useStyles = makeStyles({
 });
 
 export default function AddNewApplication(props) {
-  const { handleClose, applicationItems, setApplicationItems } = props;
+  const { handleClose, applicationItems, setApplicationItems, documents } = props;
   const classes = useStyles();
 
   const [values, setValues] = useState({
@@ -60,12 +66,10 @@ export default function AddNewApplication(props) {
     clDocumentName: '',
     resume: null,
     rDocumentName: '',
-    otherDocs: null,
+    otherDoc: null,
     oDocumentName: '',
-    status: '',
+    status: 'Applied',
   });
-
-
 
   const [alerts, setAlerts] = useState({
     company: false,
@@ -73,7 +77,7 @@ export default function AddNewApplication(props) {
     date: false,
     coverLetter: false,
     resume: false,
-    otherDocs: false,
+    otherDoc: false,
     status: false,
   });
 
@@ -95,11 +99,10 @@ export default function AddNewApplication(props) {
   const handleAddNewApplication = () => {
     let aCompany = isNullOrEmptyOrWhitespace(values.company);
     let aRole = isNullOrEmptyOrWhitespace(values.role);
-    let aDate = isNullOrEmpty(values.date); // Need to create a time picker that the user can select date and time from...(probably won't be checked except to make sure no future dates/times)
-    let aCoverLetter = false; // Just need to check its not null(they selected a document basically or 'No Cover Letter Option')
-    let aResume = false; // Same as above
-    let aOtherDocs = false; // Same as above
-    let aStatus = isNullOrEmptyOrWhitespace(values.status); // Probably won't be needed. Just here for now while I build it out. Status will be preselected to 'applied' but user can change to something else
+    let aDate = isInvalidDate(values.date); // Need to create a time picker that the user can select date and time from...(probably won't be checked except to make sure no future dates/times)
+    let aCoverLetter = isNullOrEmpty(values.clDocumentName); // Just need to check its not null(they selected a document basically or 'No Cover Letter Option')
+    let aResume = isNullOrEmpty(values.rDocumentName); // Same as above
+    let aOtherDoc = isNullOrEmpty(values.oDocumentName); // Same as above
 
     setAlerts({
       company: aCompany,
@@ -107,9 +110,15 @@ export default function AddNewApplication(props) {
       date: aDate,
       coverLetter: aCoverLetter,
       resume: aResume,
-      otherDocs: aOtherDocs,
-      status: aStatus,
+      otherDoc: aOtherDoc,
     });
+
+    console.log(aCompany + " " +
+      aRole + " " +
+      aDate + " " +
+      aCoverLetter + " " +
+      aResume + " " +
+      aOtherDoc);
 
     if (
       aCompany ||
@@ -117,8 +126,7 @@ export default function AddNewApplication(props) {
       aDate ||
       aCoverLetter ||
       aResume ||
-      aOtherDocs ||
-      aStatus
+      aOtherDoc
     ) {
       return;
     }
@@ -133,7 +141,7 @@ export default function AddNewApplication(props) {
       date: `${values.date}`,
       coverLetter: values.coverLetter,
       resume: values.resume,
-      otherDocs: values.otherDocs,
+      otherDoc: values.otherDoc,
       status: values.status,
     });
 
@@ -144,7 +152,7 @@ export default function AddNewApplication(props) {
       date: null,
       coverLetter: null,
       resume: null,
-      otherDocs: null,
+      otherDoc: null,
       status: null,
     });
 
@@ -158,6 +166,17 @@ export default function AddNewApplication(props) {
   const handleUpload = (e) => {
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
+
+    console.log('here')
+
+    if (e.target.value === 'newCoverLetter') {
+      setValues({ ...values, coverLetter: formData })
+    } else if (e.target.value === 'newResume') {
+      setValues({ ...values, resume: formData })
+    } else if (e.target.value === 'newOtherDoc') {
+      setValues({ ...values, otherDoc: formData })
+    }
+    console.log(e.target.value);
   };
 
   return (
@@ -171,6 +190,13 @@ export default function AddNewApplication(props) {
             value={values.company}
             onChange={(e) => setValues({ ...values, company: e.target.value })}
           />
+          {alerts.company ? (
+              <div className={classes.alert}>
+                <Alert severity='error' />
+              </div>
+            ) : (
+              <div className={classes.alert}></div>
+            )}
           <TextField
             className={classes.inputItems}
             label='Role'
@@ -178,8 +204,16 @@ export default function AddNewApplication(props) {
             value={values.role}
             onChange={(e) => setValues({ ...values, role: e.target.value })}
           />
+          {alerts.role ? (
+              <div className={classes.alert}>
+                <Alert severity='error' />
+              </div>
+            ) : (
+              <div className={classes.alert}></div>
+            )}
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+            className={classes.inputItems}
               disableToolbar
               variant='inline'
               format='MM/dd/yyyy'
@@ -195,69 +229,95 @@ export default function AddNewApplication(props) {
               }}
             />
           </MuiPickersUtilsProvider>
+          {alerts.date ? (
+              <div className={classes.alert}>
+                <Alert severity='error' />
+              </div>
+            ) : (
+              <div className={classes.alert}></div>
+            )}
         </div>
         <div>
           <div>
-            <Typography>
-              Cover Letter:{' '}
-              <FormControl>
-                <Input type='file' onChange={handleUpload} variant='outlined'>
-                  Cover Letter Upload
-                </Input>
-              </FormControl>
-            </Typography>
-            <FormControl variant='outlined' className={classes.docDiv}>
+            <FormControl variant='outlined' className={classes.inputItems}>
               <InputLabel>Cover Letter</InputLabel>
               <Select value={values.clDocumentName} onChange={(e) => setValues({ ...values, clDocumentName: e.target.value })} label='Document'>
                 <MenuItem value=''>
                   <em>None</em>
                 </MenuItem>
-                {/* Need to map a doc array here */}
+                {documents.coverLetters.map(coverLetter => (
+                  <MenuItem value={coverLetter.name}>
+                    {coverLetter.name}
+                  </MenuItem>
+                ))}
+                <MenuItem value='newCoverLetter'>
+                  <FormControl>
+                    <Input type='file' onChange={handleUpload} variant='outlined' />
+                  </FormControl>
+                </MenuItem>
               </Select>
             </FormControl>
-          </div>
-          <div>
-            <Typography>
-              Resume:{' '}
-              <FormControl>
-                <Input type='file' onChange={handleUpload} variant='outlined'>
-                  Resume Upload
-                </Input>
-              </FormControl>
-            </Typography>
-            <FormControl variant='outlined' className={classes.docDiv}>
+            {alerts.coverLetter ? (
+              <div className={classes.alert}>
+                <Alert severity='error' />
+              </div>
+            ) : (
+              <div className={classes.alert}></div>
+            )}
+            <FormControl variant='outlined' className={classes.inputItems}>
               <InputLabel>Resume</InputLabel>
               <Select value={values.rDocumentName} onChange={(e) => setValues({ ...values, rDocumentName: e.target.value })} label='Document'>
                 <MenuItem value=''>
                   <em>None</em>
                 </MenuItem>
-                {/* Need to map a doc array here */}
+                {documents.resumes.map(resume => (
+                  <MenuItem value={resume.name}>
+                    {resume.name}
+                  </MenuItem>
+                ))}
+                <MenuItem value='newResume'>
+                  <FormControl>
+                    <Input type='file' onChange={handleUpload} variant='outlined' />
+                  </FormControl>
+                </MenuItem>
               </Select>
             </FormControl>
-          </div>
-          <div>
-            <Typography>
-              Other Documents:{' '}
-              <FormControl>
-                <Input type='file' onChange={handleUpload} variant='outlined'>
-                  Other Documents Upload
-                </Input>
-              </FormControl>
-            </Typography>
-            <FormControl variant='outlined' className={classes.docDiv}>
+            {alerts.resume ? (
+              <div className={classes.alert}>
+                <Alert severity='error' />
+              </div>
+            ) : (
+              <div className={classes.alert}></div>
+            )}
+            <FormControl variant='outlined' className={classes.inputItems}>
               <InputLabel>Other Document</InputLabel>
               <Select value={values.oDocumentName} onChange={(e) => setValues({ ...values, oDocumentName: e.target.value })} label='Document'>
                 <MenuItem value=''>
                   <em>None</em>
                 </MenuItem>
-                {/* Need to map a doc array here */}
+                {documents.otherDocs.map(otherDoc => (
+                  <MenuItem value={otherDoc.name}>
+                    {otherDoc.name}
+                  </MenuItem>
+                ))}
+                <MenuItem value='newOtherDoc'>
+                  <FormControl>
+                    <Input type='file' onChange={handleUpload} variant='outlined'/>
+                  </FormControl>
+                </MenuItem>
               </Select>
             </FormControl>
+            {alerts.otherDoc ? (
+              <div className={classes.alert}>
+                <Alert severity='error' />
+              </div>
+            ) : (
+              <div className={classes.alert}></div>
+            )}
           </div>
         </div>
         <div className={classes.statusDiv}>
           <FormControl component='fieldset'>
-            <FormLabel component='legend'>Status</FormLabel>
             <RadioGroup
               row
               aria-label='status'

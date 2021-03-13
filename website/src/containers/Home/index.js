@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-import BigButton from '../../components/BigButton';
 import Applications from './Application/Applications';
 
 const useStyles = makeStyles({

@@ -14,3 +14,7 @@ export function isNullOrNaNOrLessThanOrEqualToZero(someNumber = 0) {
 export function isNullOrEmpty(someString = '') {
   return (!someString || someString.length === 0)
 }
+
+export function isInvalidDate(someDate = '') {
+  return (new Date(someDate) > new Date())
+}
