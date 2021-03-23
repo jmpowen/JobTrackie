@@ -1,22 +1,15 @@
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import Alert from '@material-ui/lab/Alert';
+
+import AlertDatePicker from '../../../components/AlertDatePicker';
+import AlertSelectDocument from '../../../components/AlertSelectDocument';
+import AlertTextField from '../../../components/AlertTextField';
 
 import {
   isNullOrEmptyOrWhitespace,
@@ -24,27 +17,18 @@ import {
   isInvalidDate,
 } from '../../../helpers/inputs';
 
-import { PostData } from '../../../helpers/httpRequests';
+import { PostData } from '../../../services/requests';
 
 const useStyles = makeStyles({
-  root: {},
-  firstDiv: {
-    height: '30px',
+  root: {
+    width: 850
   },
-  inputItems: {
-    width: '24%',
-    margin: 10,
+  containerDivs: {
+    display: 'inline-block'
   },
   statusDiv: {
     justifyContent: 'center',
     display: 'flex',
-  },
-  alert: {
-    marginTop: 14,
-    display: 'inline-block',
-    marginRight: 5,
-    marginLeft: 5,
-    width: 53,
   },
   submitButton: {
     backgroundColor: '#a6a298',
@@ -54,8 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AddNewApplication(props) {
-  const { handleClose, applicationItems, setApplicationItems, documents } = props;
+export default function AddNewApplication({ handleClose, applicationItems, setApplicationItems, documents }) {
   const classes = useStyles();
 
   const [values, setValues] = useState({
@@ -113,13 +96,6 @@ export default function AddNewApplication(props) {
       otherDoc: aOtherDoc,
     });
 
-    console.log(aCompany + " " +
-      aRole + " " +
-      aDate + " " +
-      aCoverLetter + " " +
-      aResume + " " +
-      aOtherDoc);
-
     if (
       aCompany ||
       aRole ||
@@ -167,8 +143,6 @@ export default function AddNewApplication(props) {
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
 
-    console.log('here')
-
     if (e.target.value === 'newCoverLetter') {
       setValues({ ...values, coverLetter: formData })
     } else if (e.target.value === 'newResume') {
@@ -182,140 +156,54 @@ export default function AddNewApplication(props) {
   return (
     <>
       <Card className={classes.root}>
-        <div>
-          <TextField
-            className={classes.inputItems}
+        <div className={classes.containerDivs}>
+          <AlertTextField
+            alert={alerts.company}
             label='Company'
-            variant='filled'
             value={values.company}
             onChange={(e) => setValues({ ...values, company: e.target.value })}
           />
-          {alerts.company ? (
-              <div className={classes.alert}>
-                <Alert severity='error' />
-              </div>
-            ) : (
-              <div className={classes.alert}></div>
-            )}
-          <TextField
-            className={classes.inputItems}
+          <AlertTextField
+            alert={alerts.role}
             label='Role'
-            variant='filled'
             value={values.role}
             onChange={(e) => setValues({ ...values, role: e.target.value })}
           />
-          {alerts.role ? (
-              <div className={classes.alert}>
-                <Alert severity='error' />
-              </div>
-            ) : (
-              <div className={classes.alert}></div>
-            )}
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-            className={classes.inputItems}
-              disableToolbar
-              variant='inline'
-              format='MM/dd/yyyy'
-              margin='normal'
-              id='date-picker-inline'
-              label='Date picker inline'
+            <AlertDatePicker
               value={values.date}
-              onChange={(date) =>
-                setValues({ ...values, date: `${date.toDateString()}` })
-              }
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
+              onChange={(date) => setValues({ ...values, date: `${date.toDateString()}` })}
+              alert={alerts.date}
             />
-          </MuiPickersUtilsProvider>
-          {alerts.date ? (
-              <div className={classes.alert}>
-                <Alert severity='error' />
-              </div>
-            ) : (
-              <div className={classes.alert}></div>
-            )}
         </div>
-        <div>
-          <div>
-            <FormControl variant='outlined' className={classes.inputItems}>
-              <InputLabel>Cover Letter</InputLabel>
-              <Select value={values.clDocumentName} onChange={(e) => setValues({ ...values, clDocumentName: e.target.value })} label='Document'>
-                <MenuItem value=''>
-                  <em>None</em>
-                </MenuItem>
-                {documents.coverLetters.map(coverLetter => (
-                  <MenuItem value={coverLetter.name}>
-                    {coverLetter.name}
-                  </MenuItem>
-                ))}
-                <MenuItem value='newCoverLetter'>
-                  <FormControl>
-                    <Input type='file' onChange={handleUpload} variant='outlined' />
-                  </FormControl>
-                </MenuItem>
-              </Select>
-            </FormControl>
-            {alerts.coverLetter ? (
-              <div className={classes.alert}>
-                <Alert severity='error' />
-              </div>
-            ) : (
-              <div className={classes.alert}></div>
-            )}
-            <FormControl variant='outlined' className={classes.inputItems}>
-              <InputLabel>Resume</InputLabel>
-              <Select value={values.rDocumentName} onChange={(e) => setValues({ ...values, rDocumentName: e.target.value })} label='Document'>
-                <MenuItem value=''>
-                  <em>None</em>
-                </MenuItem>
-                {documents.resumes.map(resume => (
-                  <MenuItem value={resume.name}>
-                    {resume.name}
-                  </MenuItem>
-                ))}
-                <MenuItem value='newResume'>
-                  <FormControl>
-                    <Input type='file' onChange={handleUpload} variant='outlined' />
-                  </FormControl>
-                </MenuItem>
-              </Select>
-            </FormControl>
-            {alerts.resume ? (
-              <div className={classes.alert}>
-                <Alert severity='error' />
-              </div>
-            ) : (
-              <div className={classes.alert}></div>
-            )}
-            <FormControl variant='outlined' className={classes.inputItems}>
-              <InputLabel>Other Document</InputLabel>
-              <Select value={values.oDocumentName} onChange={(e) => setValues({ ...values, oDocumentName: e.target.value })} label='Document'>
-                <MenuItem value=''>
-                  <em>None</em>
-                </MenuItem>
-                {documents.otherDocs.map(otherDoc => (
-                  <MenuItem value={otherDoc.name}>
-                    {otherDoc.name}
-                  </MenuItem>
-                ))}
-                <MenuItem value='newOtherDoc'>
-                  <FormControl>
-                    <Input type='file' onChange={handleUpload} variant='outlined'/>
-                  </FormControl>
-                </MenuItem>
-              </Select>
-            </FormControl>
-            {alerts.otherDoc ? (
-              <div className={classes.alert}>
-                <Alert severity='error' />
-              </div>
-            ) : (
-              <div className={classes.alert}></div>
-            )}
+          <div className={classes.containerDivs}>
+            <AlertSelectDocument
+              alert={alerts.coverLetter}
+              label='Cover Letter'
+              value={values.clDocumentName}
+              onChange={(e) => setValues({ ...values, clDocumentName: e.target.value })}
+              selectItems={documents.coverLetters}
+              newDocType='newCoverLetter'
+              handleUpload={handleUpload}
+            />
+            <AlertSelectDocument
+              alert={alerts.resume}
+              label='Resume'
+              value={values.rDocumentName}
+              onChange={(e) => setValues({ ...values, rDocumentName: e.target.value })}
+              selectItems={documents.resumes}
+              newDocType='newResume'
+              handleUpload={handleUpload}
+            />
+            <AlertSelectDocument
+              alert={alerts.otherDoc}
+              label='Other Document'
+              value={values.oDocumentName}
+              onChange={(e) => setValues({ ...values, oDocumentName: e.target.value })}
+              selectItems={documents.otherDocs}
+              newDocType='newOtherDoc'
+              handleUpload={handleUpload}
+            />
           </div>
-        </div>
         <div className={classes.statusDiv}>
           <FormControl component='fieldset'>
             <RadioGroup

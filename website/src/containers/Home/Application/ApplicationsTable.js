@@ -35,8 +35,7 @@ const useStyles = makeStyles({
  * 
  * @returns 
  */
-export default function CustomTable(props) {
-  const { columnTitles, items, accessOrder, handleChangeStatus, handleDelete } = props;
+export default function CustomTable({ columnTitles, items, accessOrder, handleChangeStatus, handleDelete }) {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState(null);

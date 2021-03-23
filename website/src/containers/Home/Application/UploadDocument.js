@@ -9,7 +9,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { PostData } from '../../../helpers/httpRequests';
+
+import { PostData } from '../../../services/requests';
 
 const useStyles = makeStyles({
   root: {},
@@ -84,6 +85,8 @@ export default function UploadDocument(props) {
     }).then((res) => {
       console.log(res);
     });
+    // If document already exists then notifaction needs to tell user that wihtout moving
+    // to the close func
 
     handleClose();
   };

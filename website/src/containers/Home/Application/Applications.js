@@ -43,7 +43,8 @@ const applicationColumnTitles = [
   "Resume",
   "Other Documents",
   "Status", // Functionality of the status column needs to move resumes that have been 'closed' to the bottom
-  "    ", // Delete will be at the front (and will simply act as a 'do-not-show-any-longer' button)
+  " ", // Delete will be at the front (and will simply act as a 'do-not-show-any-longer' button)
+  " "
 ]
 
 const applicationAccessOrder = [
@@ -53,7 +54,7 @@ const applicationAccessOrder = [
   "coverLetter",
   "resume",
   "otherDocs",
-  "status"
+  "status",
 ]
 
 /**
