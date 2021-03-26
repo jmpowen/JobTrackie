@@ -1,1 +1,1 @@
-// This will contain Flag types at some point
+export const FAKE_THING = 'FAKE_THING';
